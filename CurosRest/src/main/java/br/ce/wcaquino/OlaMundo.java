@@ -11,6 +11,8 @@ public class OlaMundo {
 		Response response = RestAssured.request(Method.GET, "http://restapi.wcaquino.me:80/ola");
 
 		System.out.println(response.getBody().asString());
+		// Status code de respostas HTTP Lista https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Status
+		System.out.println(response.statusCode());
 		
 
 	}
