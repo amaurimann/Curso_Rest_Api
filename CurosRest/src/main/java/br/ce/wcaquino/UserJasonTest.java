@@ -43,4 +43,14 @@ public class UserJasonTest {
 			Assert.assertEquals(1, id);
 
 		}
+		@Test
+		public void deveVerificarSegundoNivel() {
+			given()
+			.when()
+				.get("http://restapi.wcaquino.me/users/2")
+			.then()
+			.statusCode(200)
+			.body("name", containsString("Joaquina"))
+			.body("endereco.rua", is("Rua dos bobos"));
+		}
 }
