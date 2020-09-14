@@ -69,6 +69,17 @@ public class UserJasonTest {
 			.body("filhos.name", hasItems("Zezinho", "Luizinho"));
 		}
 		
+		@Test
+		public void deveVerificarErroUsuarioInexistente() {
+			given()
+			.when()
+				.get("http://restapi.wcaquino.me/users/4")
+			.then()
+			.statusCode(404)
+			.body("error", is("Usuário inexistente"));
+		}
+		
+		
 		
 		
 		
