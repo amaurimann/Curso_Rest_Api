@@ -3,6 +3,7 @@ package br.ce.wcaquino;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.junit.Assert;
@@ -19,7 +20,7 @@ public class UserJasonTest {
 	public void deveVerificarPrimeiroNivel() {
 		given()
 		.when()
-		.get("http://restapi.wcaquino.me/users/1").then().statusCode(200)
+			.get("http://restapi.wcaquino.me/users/1").then().statusCode(200)
 		.body("id", is(1))
 				.body("name", containsString("Silva"))
 				.body("age", greaterThan(18));
@@ -48,7 +49,7 @@ public class UserJasonTest {
 	public void deveVerificarSegundoNivel() {
 		given()
 		.when()
-		.get("http://restapi.wcaquino.me/users/2")
+			.get("http://restapi.wcaquino.me/users/2")
 		.then().statusCode(200)
 				.body("name", containsString("Joaquina"))
 				.body("endereco.rua", is("Rua dos bobos"));
@@ -58,7 +59,7 @@ public class UserJasonTest {
 	public void deveVerificarLista() {
 		given()
 		.when()
-		.get("http://restapi.wcaquino.me/users/3")
+			.get("http://restapi.wcaquino.me/users/3")
 		.then().statusCode(200)
 				.body("name", containsString("Ana")).body("filhos", hasSize(2))
 				.body("filhos[0].name", is("Zezinho"))
@@ -71,7 +72,7 @@ public class UserJasonTest {
 	public void deveVerificarErroUsuarioInexistente() {
 		given()
 		.when()
-		.get("http://restapi.wcaquino.me/users/4")
+			.get("http://restapi.wcaquino.me/users/4")
 		.then().statusCode(404)
 		.body("error", is("Usuário inexistente"));
 	}
@@ -80,7 +81,7 @@ public class UserJasonTest {
 	public void deveVerificarListaRaiz() {
 		given()
 		.when()
-		.get("http://restapi.wcaquino.me/users")
+			.get("http://restapi.wcaquino.me/users")
 		.then().statusCode(200)
 		.body("$", hasSize(3))
 				.body("name", hasItem("João da Silva"))
@@ -97,7 +98,7 @@ public class UserJasonTest {
 	public void deveFazerVerificacoesAvancadas() {
 		given()
 		.when()
-		.get("http://restapi.wcaquino.me/users")
+			.get("http://restapi.wcaquino.me/users")
 		.then()
 		.statusCode(200)
 		.body("$", hasSize(3))
@@ -123,7 +124,21 @@ public class UserJasonTest {
 	}
 	
 	
+	@Test
+	public void devoUnirJsonPathComJAVA() {
+		ArrayList <String> names = 
+		given()
+		.when()
+			.get("http://restapi.wcaquino.me/users")
+		.then()
+		.statusCode(200)
+		.extract().path("name.findAll{it.startsWith('Maria')}")
+		;
+	Assert.assertEquals(1, names.size());
+	Assert.assertTrue(names.get(0).equalsIgnoreCase("Maria JOAQUINA"));
+	Assert.assertEquals(names.get(0).toUpperCase(), "maria joaquina".toUpperCase());
 	
+	}
 	
 	
 	
