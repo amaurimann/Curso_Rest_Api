@@ -4,8 +4,12 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 
 import java.net.http.HttpResponse.BodyHandler;
+import java.util.ArrayList;
 
+import org.junit.Assert;
 import org.junit.Test;
+
+import io.restassured.path.xml.element.Node;
 
 
 public class UserXMLTest {
@@ -60,5 +64,25 @@ public class UserXMLTest {
 			;
 	}
 	
+	@Test
+	public void devoFazerPesquisasAvancadasComXMLEJava() {
+		ArrayList<Node> nomes = given()
+		.when()
+			.get("http://restapi.wcaquino.me/usersXML") // url de consulta
+		.then()
+			.statusCode(200)
+			.extract().path("users.user.name.findAll{it.toString().contains('n')}");
+			//.extract().path("users.user.name.findAll{it.toString().startsWith('Maria')}");
+		;
+		Assert.assertEquals(2, nomes.size());
+		Assert.assertEquals("Maria Joaquina".toUpperCase(), nomes.get(0).toString().toUpperCase());
+		Assert.assertTrue("ANA JULIA".equalsIgnoreCase(nomes.get(1).toString()));
+		//Assert.assertEquals("Maria Joaquina".toUpperCase(), nome.toUpperCase());
+		//System.out.println(nome.toString());
+		//System.out.println(nomes);
+		
 
+
+}
+	
 }
