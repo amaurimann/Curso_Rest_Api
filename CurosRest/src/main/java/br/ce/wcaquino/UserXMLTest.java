@@ -7,12 +7,22 @@ import java.net.http.HttpResponse.BodyHandler;
 import java.util.ArrayList;
 
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import io.restassured.RestAssured;
 import io.restassured.path.xml.element.Node;
 
 
 public class UserXMLTest {
+	
+	@BeforeClass
+	public static void setup() {
+		RestAssured.baseURI = "https://restapi.wcaquino.me";
+		//RestAssured.port = 443; //http:
+		//RestAssured.basePath = "/v2"; //http://restapi.wcaquino.me/v2/users
+		
+	}
 	
 	@Test
 	
@@ -20,7 +30,8 @@ public class UserXMLTest {
 		
 		given()
 		.when()
-		.get("http://restapi.wcaquino.me/usersXML/3")
+			.log().all()
+			.get("/usersXML/3")
 		.then()
 		.statusCode(200)
 		
@@ -48,7 +59,7 @@ public class UserXMLTest {
 	public void devoFazerPesquisasAvancadasComXML() {
 		given()
 		.when()
-			.get("http://restapi.wcaquino.me/usersXML") // url de consulta
+			.get("/usersXML") // url de consulta
 		.then()
 			.statusCode(200) // validate status OK
 			.body("users.user.size()", is(3)) // test size array
@@ -68,7 +79,7 @@ public class UserXMLTest {
 	public void devoFazerPesquisasAvancadasComXMLEJava() {
 		ArrayList<Node> nomes = given()
 		.when()
-			.get("http://restapi.wcaquino.me/usersXML") // url de consulta
+			.get("/usersXML") // url de consulta
 		.then()
 			.statusCode(200)
 			.extract().path("users.user.name.findAll{it.toString().contains('n')}");
@@ -88,7 +99,7 @@ public class UserXMLTest {
 		
 		given()
 		.when()
-			.get("http://restapi.wcaquino.me/usersXML")
+			.get("/usersXML")
 		.then()
 		.statusCode(200)
 		.body(hasXPath("count(/users/user)", is("3")))
@@ -105,15 +116,9 @@ public class UserXMLTest {
 		.body(hasXPath("//user[age < 24]/name", is("Ana Julia")))
 		.body(hasXPath("//user[age > 20 and age < 30]/name", is("Maria Joaquina")))
 		.body(hasXPath("//user[age > 20][age < 30]/name", is("Maria Joaquina")))
-
-
-
 		;
-		
-		
-		
-		
-		
 	}
+	
+	
 	
 }
