@@ -6,6 +6,7 @@ import static org.hamcrest.Matchers.*;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.junit.Assert;
 //import org.hamcrest.Matchers;
 import org.junit.Test;
 
@@ -167,7 +168,7 @@ public class VerbosTest {
 			.log().all() // print the logs in console
 			.contentType("application/json") //define a type of info has a sending . Json
 			.body(params)
-			.when()
+		.when()
 			.post("http://restapi.wcaquino.me/users")//save new infos, like SET . seting new name and age to users
 		.then()
 			.log().all()
@@ -189,7 +190,7 @@ public class VerbosTest {
 			.log().all() // print the logs in console
 			.contentType("application/json") //define a type of info has a sending . Json
 			.body(user)
-			.when()
+		.when()
 			.post("http://restapi.wcaquino.me/users")//save new infos, like SET . seting new name and age to users
 		.then()
 			.log().all()
@@ -199,6 +200,31 @@ public class VerbosTest {
 			.body("age", is(35))//after set new infos validate age value
 		
 		;
+	}
+	
+	@Test
+	public void deveDeserializarobjetoAoSalvarUsuario() {
+		//Deserialização de Json via objeto
+		User user = new User("usuario deserializado", 35);
+		
+		User usuarioInserido = given()
+			.log().all() // print the logs in console
+			.contentType("application/json") //define a type of info has a sending . Json
+			.body(user)
+		.when()
+			.post("http://restapi.wcaquino.me/users")//save new infos, like SET . seting new name and age to users
+		.then()
+			.log().all()
+			.statusCode(201)// status code 201 identified a new resource created
+			.extract().body().as(User.class)//extraindo infos da class/objeto User
+			
+		
+		;
+		
+		System.out.println(usuarioInserido);
+		Assert.assertThat(usuarioInserido.getId(), notNullValue());
+		Assert.assertEquals("usuario deserializado", usuarioInserido.getName());
+		Assert.assertThat(usuarioInserido.getAge(), is(35));
 	}
 	 
 }
