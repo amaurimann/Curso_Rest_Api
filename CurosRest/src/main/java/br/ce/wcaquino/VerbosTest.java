@@ -2,6 +2,10 @@ package br.ce.wcaquino;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
+
+import java.util.HashMap;
+import java.util.Map;
+
 //import org.hamcrest.Matchers;
 import org.junit.Test;
 
@@ -149,6 +153,30 @@ public class VerbosTest {
 			.statusCode(400)
 			.body("error", is("Registro inexistente"))
 		;	
+	}
+	
+	@Test
+	public void deveSalvarUsuarioUsandoMap() {
+		//Serialização de Json via map
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("name", "usuario via map");
+		params.put("age", 25);
+		
+		
+		given()
+			.log().all() // print the logs in console
+			.contentType("application/json") //define a type of info has a sending . Json
+			.body(params)
+			.when()
+			.post("http://restapi.wcaquino.me/users")//save new infos, like SET . seting new name and age to users
+		.then()
+			.log().all()
+			.statusCode(201)// status code 201 identified a new resource created
+			.body("id", is(notNullValue()))// to this Test the id is random, so to validete this we need considerer jus a not null value in id to sucess
+			.body("name", is("usuario via map"))// after set new infos validate name value
+			.body("age", is(25))//after set new infos validate age value
+		
+		;
 	}
 }
 
