@@ -20,9 +20,9 @@ public class VerbosTest {
 		.then()
 			.log().all()
 			.statusCode(201)// status code 201 identified a new resource created
-			.body("id", is(notNullValue()))
-			.body("name", is("Jose"))
-			.body("age", is(50))
+			.body("id", is(notNullValue()))// to this Test the id is random, so to validete this we need considerer jus a not null value in id to sucess
+			.body("name", is("Jose"))// after set new infos validate name value
+			.body("age", is(50))//after set new infos validate age value
 		
 		;
 		
