@@ -2,14 +2,11 @@ package br.ce.wcaquino;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
-
-import java.net.http.HttpResponse.BodyHandler;
+//import java.net.http.HttpResponse.BodyHandler;
 import java.util.ArrayList;
-
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.builder.ResponseSpecBuilder;
