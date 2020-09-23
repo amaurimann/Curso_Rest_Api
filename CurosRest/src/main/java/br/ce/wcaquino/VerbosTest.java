@@ -82,7 +82,48 @@ public class VerbosTest {
 		
 		;
 	}
+	
+	@Test
+	public void devoCustomizarURL() {
+		given()
+			.log().all() // print the logs in console
+			.contentType("application/json") //define a type of info has a sending . Json
+			.body("{\"name\" : \"Usuario alterado\",\"age\" : 80}\n") // SETing new infos . name = Usuario alterado and age = 80
+			.pathParam("entidade", "users")
+			.pathParam("userId", "1")
+		.when()
+			.put("http://restapi.wcaquino.me/{entidade}/{userId}")//save new infos, like SET . seting new name and age to users in INDEX 1
+		.then()
+			.log().all()
+			.statusCode(200)// status code 200 identified sucess
+			.body("id", is(1))// id PUT, changed index 1
+			.body("name", is("Usuario alterado"))// after set new infos validate name value
+			.body("age", is(80))//after set new infos validate age value
+			.body("salary", is(1234.5678f))
+		
+		;
 
+	}
+	
+	@Test
+	public void devoCustomizarURLParte2() {
+		given()
+			.log().all() // print the logs in console
+			.contentType("application/json") //define a type of info has a sending . Json
+			.body("{\"name\" : \"Usuario alterado\",\"age\" : 80}\n") // SETing new infos . name = Usuario alterado and age = 80
+		.when()
+			.put("http://restapi.wcaquino.me/{entidade}/{userId}", "users", "1")//save new infos, like SET . seting new name and age to users in INDEX 1
+		.then()
+			.log().all()
+			.statusCode(200)// status code 200 identified sucess
+			.body("id", is(1))// id PUT, changed index 1
+			.body("name", is("Usuario alterado"))// after set new infos validate name value
+			.body("age", is(80))//after set new infos validate age value
+			.body("salary", is(1234.5678f))
+		
+		;
+
+	}
 }
 
 
