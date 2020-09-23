@@ -4,6 +4,8 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 //import org.hamcrest.Matchers;
 import org.junit.Test;
+
+import io.restassured.http.ContentType;
 //import io.restassured.RestAssured;
 
 
@@ -41,8 +43,28 @@ public class VerbosTest {
 		.body("id", is(nullValue()))// in this Test the id is null because is not seting a new object with name
 		.body("error", is("Name é um atributo obrigatório"))
 	
-	;
+		;
 	}
+	
+	@Test
+	public void deveSalvarUsuarioViaXML() {
+		given()
+			.log().all() // print the logs in console
+			.contentType(ContentType.XML) //define a type of info has a sending . XML
+			.body("<user><name>Jose</name><age>50</age></user>") // SETing new infos . name = Jose and age = 50
+		.when()
+			.post("http://restapi.wcaquino.me/usersXML")//save new infos, like SET . seting new name and age to users
+		.then()
+			.log().all()
+			.statusCode(201)// status code 201 identified a new resource created
+			.body("user.@id", is(notNullValue()))// to this Test the id is random, so to validete this we need considerer jus a not null value in id to sucess
+			.body("user.name", is("Jose"))// after set new infos validate name value
+			.body("user.age", is("50"))//after set new infos validate age value
+		
+		;
+	}
+	
 
 }
+
 
