@@ -178,6 +178,29 @@ public class VerbosTest {
 		
 		;
 	}
+	
+	
+	@Test
+	public void deveSalvarUsuarioUsandoObjeto() {
+		//Serialização de Json via objeto
+		User user = new User("usuario via objeto", 35);
+		
+		given()
+			.log().all() // print the logs in console
+			.contentType("application/json") //define a type of info has a sending . Json
+			.body(user)
+			.when()
+			.post("http://restapi.wcaquino.me/users")//save new infos, like SET . seting new name and age to users
+		.then()
+			.log().all()
+			.statusCode(201)// status code 201 identified a new resource created
+			.body("id", is(notNullValue()))// to this Test the id is random, so to validete this we need considerer jus a not null value in id to sucess
+			.body("name", is("usuario via objeto"))// after set new infos validate name value
+			.body("age", is(35))//after set new infos validate age value
+		
+		;
+	}
+	 
 }
 
 
