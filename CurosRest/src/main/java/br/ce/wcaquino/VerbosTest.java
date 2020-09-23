@@ -25,8 +25,23 @@ public class VerbosTest {
 			.body("age", is(50))//after set new infos validate age value
 		
 		;
-		
-		
+	}
+	
+	@Test
+	public void naoDeveSalvarUsuarioSemNome() {
+		given()
+		.log().all() // print the logs in console
+		.contentType("application/json") //define a type of info has a sending . Json
+		.body("{\"age\" : 50}\n") // SETing new infos . age = 50
+	.when()
+		.post("http://restapi.wcaquino.me/users")//save new infos, like SET . seting new name and age to users
+	.then()
+		.log().all()
+		.statusCode(400)// status code 400 to identifi bad request
+		.body("id", is(nullValue()))// in this Test the id is null because is not seting a new object with name
+		.body("error", is("Name é um atributo obrigatório"))
+	
+	;
 	}
 
 }
