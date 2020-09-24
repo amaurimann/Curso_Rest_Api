@@ -70,6 +70,27 @@ public class VerbosTest {
 	}
 	
 	@Test
+	public void deveSalvarUsuarioViaXMLUsandoObjeto() {
+		
+		User user = new User("Usuario XML", 40);
+		
+		given()
+			.log().all() // print the logs in console
+			.contentType(ContentType.XML) //define a type of info has a sending . XML
+			.body(user)
+			.when()
+			.post("http://restapi.wcaquino.me/usersXML")//save new infos, like SET . seting new name and age to users
+		.then()
+			.log().all()
+			.statusCode(201)// status code 201 identified a new resource created
+			.body("user.@id", is(notNullValue()))// to this Test the id is random, so to validete this we need considerer jus a not null value in id to sucess
+			.body("user.name", is("Usuario XML"))// after set new infos validate name value
+			.body("user.age", is("40"))//after set new infos validate age value
+		
+		;
+	}
+	
+	@Test
 	public void deveAlterarUsuario() {
 		given()
 			.log().all() // print the logs in console

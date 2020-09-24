@@ -1,11 +1,21 @@
 package br.ce.wcaquino;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement(name="user")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class User {
 
 	private Long id;
 	private String name;
 	private Integer age;
 	private Double salary;
+	
+	public User() {
+		
+	}
 
 	public User(String name, Integer age) {
 		super();
