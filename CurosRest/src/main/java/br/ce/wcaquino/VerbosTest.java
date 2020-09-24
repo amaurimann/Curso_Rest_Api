@@ -78,7 +78,7 @@ public class VerbosTest {
 			.log().all() // print the logs in console
 			.contentType(ContentType.XML) //define a type of info has a sending . XML
 			.body(user)
-			.when()
+		.when()
 			.post("http://restapi.wcaquino.me/usersXML")//save new infos, like SET . seting new name and age to users
 		.then()
 			.log().all()
@@ -88,6 +88,30 @@ public class VerbosTest {
 			.body("user.age", is("40"))//after set new infos validate age value
 		
 		;
+	}
+	
+	@Test
+	public void deveDeserializarXMLAoSalvarUsuario() {
+		
+		User user = new User("Usuario XML", 40);
+		
+		User usuarioInserido =  given()
+			.log().all() // print the logs in console
+			.contentType(ContentType.XML) //define a type of info has a sending . XML
+			.body(user)
+		.when()
+			.post("http://restapi.wcaquino.me/usersXML")//save new infos, like SET . seting new name and age to users
+		.then()
+			.log().all()
+			.statusCode(201)// status code 201 identified a new resource created
+			.extract().body().as(User.class)
+			
+		;
+		Assert.assertThat(usuarioInserido.getAge(), is(40));
+		Assert.assertThat(usuarioInserido.getId(), notNullValue());
+		Assert.assertThat(usuarioInserido.getName(), is("Usuario XML"));
+		Assert.assertThat(usuarioInserido.getSalary(), nullValue());
+		//System.out.println(usuarioInserido);
 	}
 	
 	@Test
