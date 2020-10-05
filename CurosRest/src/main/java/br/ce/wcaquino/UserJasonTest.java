@@ -26,6 +26,7 @@ public class UserJasonTest {
 				.body("age", greaterThan(18));
 	}
 
+	@SuppressWarnings("deprecation")
 	@Test
 	public void deveVerificarPrimeiroNivelOutrasFormas() {
 		Response response = RestAssured.request(Method.GET, "http://restapi.wcaquino.me/users/1");
@@ -77,6 +78,7 @@ public class UserJasonTest {
 		.body("error", is("Usuário inexistente"));
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
 	public void deveVerificarListaRaiz() {
 		given()
