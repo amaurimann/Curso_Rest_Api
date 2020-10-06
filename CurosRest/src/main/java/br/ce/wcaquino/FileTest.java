@@ -1,7 +1,7 @@
 package br.ce.wcaquino;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.*;
 
 import java.io.File;
 
@@ -47,5 +47,25 @@ public class FileTest {
 		
 		
 	}
+
+@Test
+
+public void deveFazerUploadDoArquivoGrande() {
+	//chamando rota de upload de arquivo
+	given()
+		.log().all()
+		.multiPart("arquivo", new File("src/main/resources/#bot_control_despedida.csv"))
+	.when()
+		.post("http://restapi.wcaquino.me/upload")
+	.then()
+		.log().all()
+		.time(lessThan(10000l))
+		.statusCode(413) //sucesso
+		//.body("name", is("#bot_control_despedida.csv"))
+	;
+	
+	
+	
+}
 
 }
