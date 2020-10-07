@@ -194,5 +194,5 @@ public class AuthTest {
 		XmlPath xmlPath = new XmlPath(CompatibilityMode.HTML, body);
 		System.out.println(xmlPath.getString("html.body.table.tbody.tr[0].td[0]"));
 	}
-
+				
 }
