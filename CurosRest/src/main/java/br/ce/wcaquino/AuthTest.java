@@ -1,10 +1,15 @@
 package br.ce.wcaquino;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.*;
 import static org.hamcrest.Matchers.is;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.junit.Test;
+
+import io.restassured.http.ContentType;
 
 
 public class AuthTest {
@@ -113,6 +118,45 @@ public class AuthTest {
 		.body("status", is("logado"))
 		
 		;	
+		
+	}
+	
+	
+	@Test
+	public void deveFazerAutenticacaoComTokenJWT() {
+		Map<String, String> login = new HashMap<String, String>();
+		login.put("email", "amaurimoraismann@gmail.com");
+		login.put("senha", "123456");
+		
+		//login an api
+		//Receber o token
+		String token  = given() //String token recebe o resultado dessa requisiçao abaixo
+		.log().all()
+		.body(login)
+		.contentType(ContentType.JSON)//informando tipo de arquivo que esta sendo enviado, arquivo usuario e senha de login
+	.when()
+		.post("http://barrigarest.wcaquino.me/signin")
+	.then()
+		.log().all()
+		.statusCode(200)
+		.extract().path("token");
+		
+		;	
+		
+		//obter as contas
+		given()
+			.log().all()
+			.header("Authorization", "JWT " + token) // enviando token jwt para requisicao autorizar acesso
+		.when()
+			.get("http://barrigarest.wcaquino.me/contas")
+		.then()
+			.log().all()
+			.statusCode(200)
+			.body("nome", hasItem("Conta de teste"))
+		;
+	
+		
+		
 		
 	}
 
